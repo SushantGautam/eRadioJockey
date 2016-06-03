@@ -17,7 +17,11 @@ print("Contact 072bct544@ioe.edu.np if you wish to contribute.")
 print("Checkout : https://github.com/SushantGautam/eRadioJockey")
 print("\nNote:\nInternet Connection required!\nVLC path defined in the program.\n")
 print("___________________")
+<<<<<<< HEAD
 print("\nCooking news for you. . . ")
+=======
+print("\nLoading eKantipur website in Mozilla Firefox... . ")
+>>>>>>> origin/master
 
 
 driver = webdriver.Firefox()
