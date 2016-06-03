@@ -15,7 +15,7 @@ print("Contact 072bct544@ioe.edu.np if you wish to contribute.")
 print("Checkout : https://github.com/SushantGautam/eRadioJockey")
 print("\nNote:\nInternet Connection & Mozilla Firefox required!\nVLC path defined in the program.\n")
 print("___________________")
-print("\nLoading eKantipur website in Mozilla Firefox. . . ")
+print("\nLoading eKantipur website in Mozilla Firefox. .. . . ")
 
 
 driver = webdriver.Firefox()
