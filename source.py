@@ -1,68 +1,69 @@
-from gtts import gTTS
-import shutil
-import time, os, glob
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
-from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
-import winsound, sys
-from datetime import datetime
-import urllib
+import tkinter as tk
+import subprocess
+from Tkinter import *
+import os
 
 
-print("eRadioJockey Project")
-print("___________________")
-print("Dynamic Radio/ Paper Reader Project for LOCUS 2016.")
-print("Contact 072bct544@ioe.edu.np if you wish to contribute.")
-print("Checkout : https://github.com/SushantGautam/eRadioJockey")
-print("\nNote:\nInternet Connection required!\nVLC path defined in the program.\n")
-print("___________________")
-<<<<<<< HEAD
-print("\nCooking news for you. . . ")
-=======
-print("\nLoading eKantipur website in Mozilla Firefox... . ")
->>>>>>> origin/master
+
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        tk.Frame.__init__(self, master)
+        self.pack()
+        self.createWidgets()
 
 
-driver = webdriver.Firefox()
-#driver = webdriver.PhantomJS(executable_path="E:\Twister/BackEnd/twisterBackEng.exe", service_args=['--load-images=no'])
-#ekantipur.com
-decodeURL='http://www.ekantipur.com/eng'
-driver.get(decodeURL)
 
-def speak(voicedata, num):
-    print(str((newsnum+1) - num))
-    tts = gTTS(text=voicedata, lang='en')
-    tts.save("e:/temp/"+str(num+1)+".mp3")
-    shutil.copy('E:\SandBox\Python/assets/alert.wav', 'e:/temp/')
-    newname = 'ren E:\\temp\\alert.wav'+' '+str(num)+str(num)+'.wav'
-    os.system(newname)
+    def createWidgets(self):
+
+        self.w = Label(self, text="eRadioJockey\n", font=("Helvetica", 16))
+        self.w.pack(side="top")
+
        
+        self.hi_there = tk.Button(self)
+        self.hi_there["text"] = "Compile & Play News"
+        self.hi_there["command"] = self.say_hi
+        self.hi_there.pack(side="top")
 
-#find the element that's name attribute display-news-title
-textw = driver.find_elements_by_class_name("display-news-title")
+        self.hi_there.pack(side="top")
+        self.reader = tk.Button(self, text="Newspaper Reader (Firefox)", fg="red",
+                              command=self.enewspaper)
+        self.reader.pack(side="top")
 
-import glob, os
-test = 'e:/temp/*'
-r = glob.glob(test)
-for i in r:
-   os.remove(i)
+        self.QUIT = tk.Button(self, text="Halt", fg="blue",
+                              command=self.stop)
+        self.QUIT.pack(side="top")
 
+        self.footer = Label(self, text="\nCC 2016,  Sushant Gautam", font=("Helvetica", 8))
+        self.footer.pack(side="top")
 
-newsnum = 6
-x=1
-while x <= newsnum :
-    speak(textw[x].text, x+1)
-    x += 1
+    def say_hi(self):
+        global process
+        os.system('taskkill /f /im twisterBackEng.exe')
+        os.system('taskkill /f /im vlc.exe')
+        process = subprocess.Popen("eRadioJockey.py", shell=True)
 
-datandtime = time.strftime("%B %d %Y")+time.strftime("%I %M %p")
-sp = 'Hello! its e radio jockey. its' + datandtime + 'in your system now. Presenting the latest news headlines prepared specifically for you.'
-speak(sp,0)
+    def enewspaper(self):
+        global process
+        os.system('taskkill /f /im twisterBackEng.exe')
+        os.system('taskkill /f /im vlc.exe')
+        process = subprocess.Popen("EPaperReader.py", shell=True)
 
+    def stop(self):
+        os.system('taskkill /f /im twisterBackEng.exe')
+        os.system('taskkill /f /im vlc.exe')
+        process.kill()
+              
+        
+def on_closing():
+        os.system('taskkill /f /im twisterBackEng.exe')
+        os.system('taskkill /f /im vlc.exe')
+        root.destroy()
+        process.kill()
+        
     
-print("\nServing via VLC media player (WIN64). . .")
-os.system("c:/progra~2/VideoLAN/VLC/vlc.exe --started-from-file --playlist-enqueue e:/temp/")
 
-time.sleep(2)
-os.system('exit')
+root = tk.Tk()
+root.protocol("WM_DELETE_WINDOW", on_closing)
+app = Application(master=root)
+app.mainloop()
 
